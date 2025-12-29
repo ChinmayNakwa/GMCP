@@ -1,6 +1,6 @@
 # Google Workspace MCP Tool Server
 
-A standalone, runnable tool server that provides a complete set of functions for interacting with the Google Calendar API. This server is built using the Model-Context-Protocol (`mcp`) library and is designed to be called by an external AI agent or orchestrator.
+A standalone, runnable tool server that provides a complete set of functions for interacting with the Google Calendar, Meet and Gmail API. This server is built using the Model-Context-Protocol (`mcp`) library and is designed to be called by an external AI agent or orchestrator.
 
 This server acts as the "hardware" or "limbs" of an AI agent, handling all the secure authentication and direct API calls to Google, while exposing a simple, clean interface.
 
