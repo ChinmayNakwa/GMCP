@@ -1,28 +1,13 @@
-import os.path
-import json
-import base64
-from fastmcp import FastMCP
-import os
-from typing import Any, Union
-
 import sys
 import os
-# --- DEBUGGING STEP ---
+import json
+from fastmcp import FastMCP
+from google.apps import meet_v2
+from google_auth.services.google_meet import get_meet_service
+
 print("--- run_meet_mcp.py starting up inside container ---", file=sys.stderr)
 print(f"Current working directory: {os.getcwd()}", file=sys.stderr)
 print(f"Python path: {sys.path}", file=sys.stderr)
-
-# The rest of your script...
-from mcp.server.fastmcp import FastMCP
-# ...
-
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.apps import meet_v2
-from google.protobuf import field_mask_pb2
-
-from google_auth.services.google_meet import get_meet_service
 
 mcp = FastMCP("Meet")
 

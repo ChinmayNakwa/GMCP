@@ -6,8 +6,6 @@ from google.auth.transport.requests import Request
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 
-# This scope is very broad. For sending only, .../auth/gmail.send is better.
-# For full read/write, .../auth/gmail.modify is a good choice.
 SCOPES = ['https://www.googleapis.com/auth/gmail.modify']
 
 CREDENTIALS_FILE = 'credentials/credentials.json'
@@ -50,15 +48,14 @@ def get_gmail_service():
             flow = InstalledAppFlow.from_client_secrets_file(
                 CREDENTIALS_FILE, SCOPES
             )
-            flow.redirect_uri = 'http://localhost:8080/'
-            creds = flow.run_local_server(port=8080, authorization_prompt_message="")
+            # flow.redirect_uri = 'http://localhost:8080/'
+            creds = flow.run_local_server(port=0, authorization_prompt_message="")
         
         print(f"Authentication successful. Saving Gmail credentials to {TOKEN_FILE}")
         with open(TOKEN_FILE, 'w') as token:
             token.write(creds.to_json())
 
     try:
-        # --- THIS IS THE FIX ---
         # Build the 'gmail' service, version 'v1'
         service = build('gmail', 'v1', credentials=creds)
         print("Google Mail service created successfully.")

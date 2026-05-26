@@ -1,21 +1,19 @@
-# google_auth/services/google_meet.py
+import os.path
 
-import os
-from google.oauth2.credentials import Credentials
 from google.auth.transport.requests import Request
+from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-from google.apps import meet_v2 
 
-SCOPES = ['https://www.googleapis.com/auth/meetings.space.created']
+SCOPES = ["https://www.googleapis.com/auth/drive.file"]
 
 CREDENTIALS_FILE = 'credentials/credentials.json'
 TOKEN_FILE = 'credentials/token_meet.json'
 
-def get_meet_service():
+def get_sheets_service():
     """
     Handles the entire Google OAuth 2.0 flow and returns an authenticated
-    Google Meet API service object.
+    Google Sheets API service object.
     """
     creds = None
 
@@ -56,9 +54,8 @@ def get_meet_service():
             token.write(creds.to_json())
 
     try:
+        service = build('sheets', 'v4', credentials=creds)
         print("Google Meet service created successfully.")
-
-        service = meet_v2.SpacesServiceClient(credentials=creds)
         return service
     except Exception as e:
         print(f"An error occurred while building the service: {e}")
