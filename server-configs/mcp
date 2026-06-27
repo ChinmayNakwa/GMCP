@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name 65.2.180.17.nip.io;
+    server_name YOUR_EC2_PUBLIC_IP.nip.io;
 
     location /auth/ {
         proxy_pass http://127.0.0.1:5000/auth/;

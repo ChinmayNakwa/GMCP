@@ -1,14 +1,19 @@
 [project]
 name = "cp-bro"
 version = "0.1.0"
-description = "Add your description here"
-readme = "README.md"
+description = "Multi-user Google Workspace MCP server suite (Calendar, Gmail, Meet, Sheets) with per-user OAuth isolation"
+readme = "readme.md"
 requires-python = ">=3.12"
 dependencies = [
     "fastmcp>=2.10.3",
+    "mcp>=1.10.1",
     "google-api-python-client>=2.176.0",
     "google-auth-httplib2>=0.2.0",
     "google-auth-oauthlib>=1.2.2",
-    "mcp>=1.10.1",
+    "google-apps-meet>=0.1.0",
+    "google-api-core>=2.19.0",
+    "grpcio>=1.64.0",
+    "flask>=3.0.0",
+    "psycopg2-binary>=2.9.9",
     "python-dotenv>=1.1.1",
 ]
