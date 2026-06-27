@@ -4,7 +4,10 @@ FROM python:3.12-slim
 # Set the working directory inside the container
 WORKDIR /app
 
-# Copy requirements file into the container
+# Copy file into the container
+COPY models/ /app/models/
+COPY auth/ /app/auth/
+COPY .env .
 COPY requirements.txt .
 
 # Install all Python dependencies

@@ -1,6 +1,9 @@
 FROM python:3.12-slim
 WORKDIR /app
 
+COPY models/ /app/models/
+COPY auth/ /app/auth/
+COPY .env .
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 

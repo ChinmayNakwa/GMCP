@@ -1,0 +1,14 @@
+[Unit]
+Description=Google Sheets MCP Server
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/workspace_mcp
+Environment=PYTHONPATH=/home/ubuntu/workspace_mcp
+EnvironmentFile=/home/ubuntu/workspace_mcp/.env
+ExecStart=/home/ubuntu/workspace_mcp/venv/bin/python /home/ubuntu/workspace_mcp/mcp_server/run_sheets_mcp.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

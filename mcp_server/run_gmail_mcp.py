@@ -22,12 +22,12 @@ def create_error_response(message: str, details: str = None) -> str:
     return json.dumps(error_obj)
 
 @mcp.tool()
-def list_emails(query: str = "is.inbox", max_results: int = 5) -> str:
+def list_emails(user_id: str, query: str = "is:inbox", max_results: int = 5) -> str:
     """
     Lists emails matching a query. Uses standard Gmail search syntax.
     Examples: 'from:boss@company.com is:unread', 'subject:"Project Update"'
     """
-    service = get_gmail_service()
+    service = get_gmail_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Gmail")
     try:
@@ -43,9 +43,9 @@ def list_emails(query: str = "is.inbox", max_results: int = 5) -> str:
         return create_error_response("An API error occured during list_emails.", str(e))
 
 @mcp.tool()
-def get_email_details(message_id: str) -> str:
+def get_email_details(user_id: str, message_id: str) -> str:
     """Retrieves the full details of a single email using its message_id."""
-    service = get_gmail_service()
+    service = get_gmail_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Gmail")
     try:
@@ -55,12 +55,12 @@ def get_email_details(message_id: str) -> str:
         return create_error_response("An API error occured during get_email_details", str(e))
 
 @mcp.tool()
-def send_email(to: str, subject: str, body: str, attachments: list[str] = None) -> str:
+def send_email(user_id: str, to: str, subject: str, body: str, attachments: list[str] = None) -> str:
     """
     Sends a new email. Can optionally include a list of file paths as attachments.
     'attachments' should be a list of strings, where each string is a valid path to a file.
     """
-    service = get_gmail_service()
+    service = get_gmail_service(user_id)
     if not service:
         return json.dumps({"error": "Failed to authenticate with Gmail."})
         
@@ -122,4 +122,4 @@ def send_email(to: str, subject: str, body: str, attachments: list[str] = None) 
     except Exception as e:
         return json.dumps({"error": f"An API error occurred while sending the email: {e}"})
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    mcp.run(transport="streamable-http", host="0.0.0.0", port=8002)

@@ -12,14 +12,14 @@ def create_error_response(message: str, details: str = None) -> str:
     return json.dumps(error_obj)
 
 @mcp.tool()
-def list_events(calendar_id: str = 'primary', max_results: int = 10, time_min: str = None) -> str:
+def list_events(user_id: str, calendar_id: str = 'primary', max_results: int = 10, time_min: str = None) -> str:
     """
     Lists events from a specified calendar. Defaults to the primary calendar.
     If time_min is not provided, it lists upcoming events.
     time_min should be in ISO 8601 format (e.g., '2024-05-21T00:00:00Z').
     Returns a JSON string of the event list.
     """
-    service = get_calendar_service()
+    service = get_calendar_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Google Calendar.")
     
@@ -37,13 +37,13 @@ def list_events(calendar_id: str = 'primary', max_results: int = 10, time_min: s
         return create_error_response("An API error occurred during list_events.", str(e))
     
 @mcp.tool()
-def create_event(summary: str, start_datetime: str, end_datetime: str, calendar_id: str = 'primary', attendees: list = None, recurrence: str = None, color_id: str = None) -> str:
+def create_event(user_id: str, summary: str, start_datetime: str, end_datetime: str, calendar_id: str = 'primary', attendees: list = None, recurrence: str = None, color_id: str = None) -> str:
     """
     Creates a new event on a specified calendar. Defaults to the primary calendar.
     'start_datetime' and 'end_datetime' must be in ISO 8601 format (e.g., '2024-05-21T10:00:00-07:00').
     Returns the created event object as a JSON string.
     """
-    service = get_calendar_service()
+    service = get_calendar_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Google Calendar.")
 
@@ -79,9 +79,9 @@ def create_event(summary: str, start_datetime: str, end_datetime: str, calendar_
         return create_error_response("An API error occurred during create_event.", str(e))
     
 @mcp.tool()
-def delete_event(event_id: str, calendar_id: str = 'primary') -> str:
+def delete_event(user_id: str, event_id: str, calendar_id: str = 'primary') -> str:
     """Deletes an event from a specified calendar using its unique event_id."""
-    service = get_calendar_service()
+    service = get_calendar_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Google Calendar.")
     
@@ -92,12 +92,12 @@ def delete_event(event_id: str, calendar_id: str = 'primary') -> str:
         return create_error_response(f"Could not delete event {event_id}.", str(e))
 
 @mcp.tool()
-def update_event(event_id: str, calendar_id: str = 'primary', updated_summary: str = None, start_datetime: str = None, end_datetime: str = None, attendees: list = None, recurrence: str = None, color_id: str = None) -> str:
+def update_event(user_id: str, event_id: str, calendar_id: str = 'primary', updated_summary: str = None, start_datetime: str = None, end_datetime: str = None, attendees: list = None, recurrence: str = None, color_id: str = None) -> str:
     """
     Updates an existing event. Fetches the event first and only modifies the provided fields.
     All other fields like attendees and location will be preserved.
     """
-    service = get_calendar_service()
+    service = get_calendar_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Google Calendar.")
     
@@ -137,9 +137,9 @@ def update_event(event_id: str, calendar_id: str = 'primary', updated_summary: s
         return create_error_response(f"Could not update event: {e}")
     
 @mcp.tool()
-def get_event_by_id(event_id: str, calendar_id: str = 'primary') -> str:
+def get_event_by_id(user_id: str, event_id: str, calendar_id: str = 'primary') -> str:
     """Retrieves a specific event by its ID."""
-    service = get_calendar_service()
+    service = get_calendar_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with Google Calendar.")
     
@@ -151,4 +151,4 @@ def get_event_by_id(event_id: str, calendar_id: str = 'primary') -> str:
 
 if __name__ == "__main__":
     print("--- Google Calendar MCP Server starting up... ---")
-    mcp.run(transport="stdio")
+    mcp.run(transport="streamable-http", host="0.0.0.0", port=8001)

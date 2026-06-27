@@ -153,4 +153,4 @@ def find_and_replace(user_id: str, spreadsheet_id: str, find: str, replacement: 
 
 if __name__ == "__main__":
     print("--- Google Sheets MCP Server starting up... ---")
-    mcp.run(transport="sse", host="0.0.0.0", port=8004)
+    mcp.run(transport="streamable-http", host="0.0.0.0", port=8004)

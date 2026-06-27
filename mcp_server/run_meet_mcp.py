@@ -18,9 +18,9 @@ def create_error_response(message: str, details: str = None) -> str:
     return json.dumps(error_obj)
 
 @mcp.tool()
-def create_meet_space():
+def create_meet_space(user_id: str):
     """Creates a new Google Meet space and returns its URI and name."""
-    service = get_meet_service()
+    service = get_meet_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with meet")
     try: 
@@ -32,9 +32,9 @@ def create_meet_space():
         return create_error_response("An API error occured during create meet space.", str(e))
 
 @mcp.tool()
-def get_meet_space(name: str) -> str:
+def get_meet_space(user_id: str, name: str) -> str:
     """Retrieves the details of a Google Meet space by its name (resource ID)."""
-    service = get_meet_service()
+    service = get_meet_service(user_id)
     if not service:
         return create_error_response("Failed to authenticate with meet")
     try:
@@ -118,4 +118,4 @@ def get_meet_space(name: str) -> str:
 #         return create_error_response("An API error occured during getting conference name.", str(e))
 
 if __name__ == "__main__":
-    mcp.run(transport="stdio")
+    mcp.run(transport="streamable-http", host="0.0.0.0", port=8003)
